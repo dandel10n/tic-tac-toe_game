@@ -18,6 +18,7 @@ var TicTacToe = function() {
 
   this.player1;
   this.player2;
+  this.currentPlayer;
 }
 
 TicTacToe.prototype.setPlayers = function(player1, player2) {
@@ -36,7 +37,7 @@ TicTacToe.prototype.cleanTheBoard = function() {
 
 }
 
-TicTacToe.prototype.move = function(position) {
+TicTacToe.prototype.setMove = function(position) {
 
 }
 
