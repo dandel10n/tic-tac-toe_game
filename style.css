@@ -84,12 +84,20 @@ h1 {
     width: 90px;
     height: 90px;
     float: left;
-    border: 1px solid white;
-    background-color: #b3ffff;
+    border: 1px solid #000;
+    cursor: pointer;
 }
 
 .grid_cell span {
       font-size: 40px;
       line-height: 90px;
       color: #666;
+}
+
+.choiceSection {
+  margin: 20px auto;
+}
+
+.choiceButton {
+  display: inline-block;
 }
