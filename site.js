@@ -13,5 +13,14 @@ $(document).ready(function(){
 
   $(".grid_cell").click(function(){
     game.setMove($(this).data("number"));
-  })
+  });
+
+  function boardRendering(board) {
+    for (var i = 0; i < 9; i++) {
+      $('.grid_cell[data-number="' + i + '"]').text(board[i]);
+    }
+  }
+
+  game.setBoardCallback(boardRendering);
 })
+

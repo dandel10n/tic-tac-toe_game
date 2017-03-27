@@ -14,7 +14,8 @@ this.board = [null, null, null, null, null, null, null, null, null];
 
   this.player1;
   this.player2;
-  this.currentPlayer;
+  this.currentPlayer = null;
+  this.boardCallback = null;
 }
 
 TicTacToe.prototype.setPlayers = function(player1, player2) {
@@ -29,6 +30,10 @@ TicTacToe.prototype.setPlayers = function(player1, player2) {
   }
 }
 
+TicTacToe.prototype.setBoardCallback = function(callback) {
+  this.boardCallback = callback;
+};
+
 TicTacToe.prototype.setMove = function(number) {
   if(!this.currentPlayer || this.currentPlayer == this.player2) {
     this.currentPlayer = this.player1;
@@ -36,7 +41,7 @@ TicTacToe.prototype.setMove = function(number) {
     this.currentPlayer = this.player2;
   }
   this.board[number] = this.currentPlayer;
-  console.log(this.board);
+  this.boardCallback(this.board);
 }
 
 TicTacToe.prototype.cleanTheBoard = function() {
@@ -46,3 +51,7 @@ TicTacToe.prototype.cleanTheBoard = function() {
 TicTacToe.prototype.getWinner = function() {
 
 }
+
+TicTacToe.prototype.boardMovesHandler = function() {
+  this.boardCallback(this.board);
+};
