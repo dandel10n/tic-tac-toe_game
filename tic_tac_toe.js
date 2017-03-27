@@ -10,11 +10,7 @@ var TicTacToe = function() {
     [3, 5, 7]
   ];
 
-  this.board = [
-    [null, null, null],
-    [null, null, null],
-    [null, null, null]
-  ];
+this.board = [null, null, null, null, null, null, null, null, null];
 
   this.player1;
   this.player2;
@@ -33,11 +29,17 @@ TicTacToe.prototype.setPlayers = function(player1, player2) {
   }
 }
 
-TicTacToe.prototype.cleanTheBoard = function() {
-
+TicTacToe.prototype.setMove = function(number) {
+  if(!this.currentPlayer || this.currentPlayer == this.player2) {
+    this.currentPlayer = this.player1;
+  } else {
+    this.currentPlayer = this.player2;
+  }
+  this.board[number] = this.currentPlayer;
+  console.log(this.board);
 }
 
-TicTacToe.prototype.setMove = function(position) {
+TicTacToe.prototype.cleanTheBoard = function() {
 
 }
 
