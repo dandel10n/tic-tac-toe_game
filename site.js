@@ -1,18 +1,14 @@
 $(document).ready(function(){
   var game = new TicTacToe();
 
-  $("#buttonX").click(function(){
-    game.setPlayers("X", "O");
+  $(".choiceButton").click(function(){
+    game.setPlayers($(this).data("player1"), $(this).data("player2"));
     $(".choiceButton").prop("disabled", true);
-  });
+    $(".winner").remove();
 
-  $("#buttonO").click(function(){
-    game.setPlayers("O", "X");
-    $(".choiceButton").prop("disabled", true);
-  });
-
-  $(".grid_cell").click(function(){
-    game.setMove($(this).data("number"));
+    $(".grid_cell").click(function(){
+      game.setMove($(this).data("number"));
+    });
   });
 
   function boardRendering(board) {
@@ -23,12 +19,12 @@ $(document).ready(function(){
 
   function resultRendering(result) {
     if (result === null) {
-      $("#game-field").append("<p>It was a draw</p>");
-    } else if (result === "X") {
-      $("#game-field").append("<p>X wins!!</p>");
-    } else if (result === "O") {
-      $("#game-field").append("<p>O wins!!</p>");
+      $("#game-field").append("<p class='winner'>It was a draw</p>");
+    } else {
+      $("#game-field").append("<p class='winner'>" + result + " wins!!</p>");
     }
+    this.cleanTheBoard();
+    $(".choiceButton").prop("disabled", false);
   }
 
   game.setBoardCallback(boardRendering);

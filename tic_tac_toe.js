@@ -10,8 +10,7 @@ var TicTacToe = function() {
     [2, 5, 8]
   ];
 
-this.board = [null, null, null, null, null, null, null, null, null];
-
+  this.board = [null, null, null, null, null, null, null, null, null];
   this.player1;
   this.player2;
   this.currentPlayer = null;
@@ -40,28 +39,34 @@ TicTacToe.prototype.setResultCallback = function(callback) {
 };
 
 TicTacToe.prototype.setMove = function(number) {
-  if(this.currentPlayer === null || this.currentPlayer == this.player2) {
-    this.currentPlayer = this.player1;
-  } else {
-    this.currentPlayer = this.player2;
+  if (this.board[number] === null) {
+    if(this.currentPlayer === null || this.currentPlayer == this.player2) {
+      this.currentPlayer = this.player1;
+    } else {
+      this.currentPlayer = this.player2;
+    }
+    this.board[number] = this.currentPlayer;
+    this.boardMovesHandler();
+    this.checkWinner();
   }
-  this.board[number] = this.currentPlayer;
-  this.boardMovesHandler();
-  this.whoWins();
 }
 
 TicTacToe.prototype.cleanTheBoard = function() {
-
+  this.board = [null, null, null, null, null, null, null, null, null];
+  this.player1 = null;
+  this.player2 = null;
+  this.currentPlayer = null;
+  this.boardMovesHandler();
 }
 
-TicTacToe.prototype.whoWins = function() {
+TicTacToe.prototype.checkWinner = function() {
   for (var i = 0; i < this.winCombinations.length; i++) {
     var firstCell = this.board[this.winCombinations[i][0]];
     var secondCell = this.board[this.winCombinations[i][1]];
     var thirdCell = this.board[this.winCombinations[i][2]];
 
     if (firstCell !== null && firstCell == secondCell && firstCell == thirdCell) {
-       this.resultCallback(this.currentPlayer);
+      this.resultCallback(this.currentPlayer);
     }
   }
 
