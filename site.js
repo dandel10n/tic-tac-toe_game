@@ -4,9 +4,10 @@ $(document).ready(function(){
   $(".choiceButton").click(function(){
     game.setPlayers($(this).data("player1"), $(this).data("player2"));
     $(".choiceButton").prop("disabled", true);
+    $(".grid_cell").unbind( "click" );
     $(".winner").remove();
 
-    $(".grid_cell").click(function(){
+    $(".grid_cell").bind("click", function(){
       game.setMove($(this).data("number"));
     });
   });
@@ -23,7 +24,7 @@ $(document).ready(function(){
     } else {
       $("#game-field").append("<p class='winner'>" + result + " wins!!</p>");
     }
-    this.cleanTheBoard();
+    setTimeout(this.cleanTheBoard.bind(this), 2000);
     $(".choiceButton").prop("disabled", false);
   }
 
