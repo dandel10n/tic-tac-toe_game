@@ -44,15 +44,9 @@ TicTacToe.prototype.setResultCallback = function(callback) {
 };
 
 TicTacToe.prototype.computerMove = function() {
-  if (this.board[0] == null) {
-    this.board[0] = this.player2;
-  } else if (this.board[1] == null) {
-    this.board[1] = this.player2;
-  } else if (this.board[2] == null) {
-    this.board[2] = this.player2;
-  }
+  this.minimax(this.board, this.player2);
   this.boardMovesHandler();
-  this.checkWinner();
+  this.setWinner();
 }
 
 TicTacToe.prototype.setMove = function(number) {
@@ -68,7 +62,7 @@ TicTacToe.prototype.setMove = function(number) {
       this.board[number] = this.player1;
     }
     this.boardMovesHandler();
-    this.checkWinner();
+    this.setWinner();
     if (!this.multiplayerGame) {
       this.computerMove();
     }
@@ -83,15 +77,16 @@ TicTacToe.prototype.cleanTheBoard = function() {
   this.boardMovesHandler();
 }
 
-TicTacToe.prototype.checkWinner = function() {
+TicTacToe.prototype.checkWinner = function(board, player) {
   for (var i = 0; i < this.winCombinations.length; i++) {
-    var firstCell = this.board[this.winCombinations[i][0]];
-    var secondCell = this.board[this.winCombinations[i][1]];
-    var thirdCell = this.board[this.winCombinations[i][2]];
+    var firstCell = board[this.winCombinations[i][0]];
+    var secondCell = board[this.winCombinations[i][1]];
+    var thirdCell = board[this.winCombinations[i][2]];
 
-    if (firstCell !== null && firstCell == secondCell && firstCell == thirdCell) {
-      this.resultCallback(firstCell);
+    if (firstCell !== null && firstCell == secondCell && firstCell == thirdCell && firstCell == player) {
+      return player;
     }
+    return false;
   }
 
   var stillPlaying = [];
@@ -102,9 +97,85 @@ TicTacToe.prototype.checkWinner = function() {
   }
   if (stillPlaying.length == 0) {
     this.resultCallback(null);
+    return null;
+  }
+}
+
+TicTacToe.prototype.setWinner = function() {
+  var winner = this.checkWinner(this.board);
+  if (winner) {
+    this.resultCallback(winner);
   }
 }
 
 TicTacToe.prototype.boardMovesHandler = function() {
   this.boardCallback(this.board);
 };
+
+TicTacToe.prototype.stillEmptyCells = function(){
+  var avaliableCells = [];
+  for (var i = 0; i < this.board.length; i++) {
+    if(this.board[i] != "O" && this.board[i] != "X") {
+      avaliableCells.push(i);
+    }
+  };
+  return avaliableCells;
+}
+
+TicTacToe.prototype.minimax = function(newBoard, player){
+
+  var stillAvaliableCells = this.stillEmptyCells();
+
+  if (this.checkWinner(newBoard, this.player1)){
+     return {score:-10};
+  } else if (this.checkWinner(newBoard, this.player2)){
+    return {score:10};
+	} else if (stillAvaliableCells.length === 0){
+    return {score:0};
+  }
+
+  //будет хранить в себе все объекты move
+  var moves = [];
+
+  for (var a = 0; a < stillAvaliableCells.length; a++){
+    var move = {};
+    move.index = stillAvaliableCells[a];
+
+    newBoard[stillAvaliableCells[a]] = player;
+    if (player == this.player2){
+      var result = this.minimax(newBoard, this.player1);
+      move.score = result.score;
+    }
+    else{
+      var result = this.minimax(newBoard, this.player2);
+      move.score = result.score;
+    }
+
+    //очищаем клетку после вычисления счета
+    newBoard[stillAvaliableCells[a]] = null;
+
+    moves.push(move);
+  }
+
+  var bestMove;
+  if(player === this.player2){
+    var bestScore = -10000;
+    for(var q = 0; q < moves.length; q++){
+      if(moves[q].score > bestScore){
+        bestScore = moves[q].score;
+        bestMove = q;
+      }
+    }
+  } else {
+    var bestScore = 10000;
+    for(var p = 0; p < moves.length; p++){
+      if(moves[p].score < bestScore){
+        bestScore = moves[p].score;
+        bestMove = p;
+      }
+    }
+  }
+
+  console.log(moves[bestMove]);
+  return moves[bestMove];
+}
