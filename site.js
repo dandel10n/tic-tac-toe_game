@@ -1,10 +1,13 @@
 $(document).ready(function(){
   var game = new TicTacToe();
 
-  $(".choiceButton").click(function(){
+  $(".chooseGameButton").click(function() {
+    game.setMultiplayerGame($(this).data("multiplayer"));
+  });
+
+  $(".chooseXOButton").click(function(){
     game.setPlayers($(this).data("player1"), $(this).data("player2"));
-    $(".choiceButton").prop("disabled", true);
-    $(".grid_cell").unbind( "click" );
+    $(".chooseXOButton").prop("disabled", true);
     $(".winner").remove();
 
     $(".grid_cell").bind("click", function(){
@@ -25,7 +28,8 @@ $(document).ready(function(){
       $("#game-field").append("<p class='winner'>" + result + " wins!!</p>");
     }
     setTimeout(this.cleanTheBoard.bind(this), 2000);
-    $(".choiceButton").prop("disabled", false);
+    $(".chooseXOButton").prop("disabled", false);
+    $(".grid_cell").unbind( "click" );
   }
 
   game.setBoardCallback(boardRendering);

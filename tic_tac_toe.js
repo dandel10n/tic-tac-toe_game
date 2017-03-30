@@ -16,6 +16,7 @@ var TicTacToe = function() {
   this.currentPlayer = null;
   this.boardCallback = null;
   this.resultCallback = null;
+  this.multiplayerGame;
 }
 
 TicTacToe.prototype.setPlayers = function(player1, player2) {
@@ -30,6 +31,10 @@ TicTacToe.prototype.setPlayers = function(player1, player2) {
   }
 }
 
+TicTacToe.prototype.setMultiplayerGame = function(multiplayer) {
+  this.multiplayerGame = multiplayer;
+}
+
 TicTacToe.prototype.setBoardCallback = function(callback) {
   this.boardCallback = callback;
 };
@@ -38,16 +43,35 @@ TicTacToe.prototype.setResultCallback = function(callback) {
   this.resultCallback = callback;
 };
 
+TicTacToe.prototype.computerMove = function() {
+  if (this.board[0] == null) {
+    this.board[0] = this.player2;
+  } else if (this.board[1] == null) {
+    this.board[1] = this.player2;
+  } else if (this.board[2] == null) {
+    this.board[2] = this.player2;
+  }
+  this.boardMovesHandler();
+  this.checkWinner();
+}
+
 TicTacToe.prototype.setMove = function(number) {
   if (this.board[number] === null) {
-    if(this.currentPlayer === null || this.currentPlayer == this.player2) {
-      this.currentPlayer = this.player1;
+    if (this.multiplayerGame) {
+      if(this.currentPlayer === null || this.currentPlayer == this.player2) {
+        this.currentPlayer = this.player1;
+      } else {
+        this.currentPlayer = this.player2;
+      }
+      this.board[number] = this.currentPlayer;
     } else {
-      this.currentPlayer = this.player2;
+      this.board[number] = this.player1;
     }
-    this.board[number] = this.currentPlayer;
     this.boardMovesHandler();
     this.checkWinner();
+    if (!this.multiplayerGame) {
+      this.computerMove();
+    }
   }
 }
 
@@ -66,7 +90,7 @@ TicTacToe.prototype.checkWinner = function() {
     var thirdCell = this.board[this.winCombinations[i][2]];
 
     if (firstCell !== null && firstCell == secondCell && firstCell == thirdCell) {
-      this.resultCallback(this.currentPlayer);
+      this.resultCallback(firstCell);
     }
   }
 
