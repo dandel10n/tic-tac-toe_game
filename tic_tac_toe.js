@@ -44,26 +44,22 @@ TicTacToe.prototype.setResultCallback = function(callback) {
 };
 
 TicTacToe.prototype.computerMove = function() {
-  this.minimax(this.board, this.player2);
-  this.boardMovesHandler();
-  this.setWinner();
+  var bestMove = this.minimax(this.board, this.player2);
+  this.setMove(bestMove.index);
 }
 
 TicTacToe.prototype.setMove = function(number) {
   if (this.board[number] === null) {
-    if (this.multiplayerGame) {
-      if(this.currentPlayer === null || this.currentPlayer == this.player2) {
-        this.currentPlayer = this.player1;
-      } else {
-        this.currentPlayer = this.player2;
-      }
-      this.board[number] = this.currentPlayer;
+    if(this.currentPlayer === null || this.currentPlayer == this.player2) {
+      this.currentPlayer = this.player1;
     } else {
-      this.board[number] = this.player1;
+      this.currentPlayer = this.player2;
     }
+    this.board[number] = this.currentPlayer;
     this.boardMovesHandler();
     this.setWinner();
-    if (!this.multiplayerGame) {
+
+    if(!this.multiplayerGame && this.currentPlayer === this.player1) {
       this.computerMove();
     }
   }
@@ -176,6 +172,5 @@ TicTacToe.prototype.minimax = function(newBoard, player){
     }
   }
 
-  console.log(moves[bestMove]);
   return moves[bestMove];
 }
