@@ -57,7 +57,7 @@ TicTacToe.prototype.setMove = function(number) {
     }
     this.board[number] = this.currentPlayer;
     this.boardMovesHandler();
-    this.setWinner();
+    this.checkWinner();
 
     if(!this.multiplayerGame && this.currentPlayer === this.player1) {
       this.computerMove();
@@ -73,34 +73,24 @@ TicTacToe.prototype.cleanTheBoard = function() {
   this.boardMovesHandler();
 }
 
-TicTacToe.prototype.checkWinner = function(board, player) {
+TicTacToe.prototype.playerIsWinner = function(board, player) {
   for (var i = 0; i < this.winCombinations.length; i++) {
     var firstCell = board[this.winCombinations[i][0]];
     var secondCell = board[this.winCombinations[i][1]];
     var thirdCell = board[this.winCombinations[i][2]];
 
     if (firstCell !== null && firstCell == secondCell && firstCell == thirdCell && firstCell == player) {
-      return player;
-    }
-    return false;
-  }
-
-  var stillPlaying = [];
-  for (var b = 0; b < this.board.length; b++) {
-    if (this.board[b] === null) {
-      stillPlaying.push(this.board[b]);
+      return true;
     }
   }
-  if (stillPlaying.length == 0) {
-    this.resultCallback(null);
-    return null;
-  }
+  return false;
 }
 
-TicTacToe.prototype.setWinner = function() {
-  var winner = this.checkWinner(this.board);
-  if (winner) {
-    this.resultCallback(winner);
+TicTacToe.prototype.checkWinner = function() {
+  if(this.playerIsWinner(this.board, this.currentPlayer)) {
+    this.resultCallback(this.currentPlayer);
+  } else if (this.stillEmptyCells().length === 0) {
+    this.resultCallback(null);
   }
 }
 
@@ -122,9 +112,9 @@ TicTacToe.prototype.minimax = function(newBoard, player){
 
   var stillAvaliableCells = this.stillEmptyCells();
 
-  if (this.checkWinner(newBoard, this.player1)){
+  if (this.playerIsWinner(newBoard, this.player1)){
      return {score:-10};
-  } else if (this.checkWinner(newBoard, this.player2)){
+  } else if (this.playerIsWinner(newBoard, this.player2)){
     return {score:10};
 	} else if (stillAvaliableCells.length === 0){
     return {score:0};
