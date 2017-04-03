@@ -121,3 +121,13 @@ h1 {
     border-radius: 4px;
     border: none;
 }
+
+.playersChoice,
+.XOChoice,
+.resetTheGame {
+  visibility: hidden;
+}
+
+.active {
+  visibility: visible;
+}

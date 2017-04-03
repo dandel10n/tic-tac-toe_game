@@ -3,16 +3,28 @@ $(document).ready(function(){
 
   $(".chooseGameButton").click(function() {
     game.setMultiplayerGame($(this).data("multiplayer"));
+    $(".XOChoice").addClass("active");
   });
 
   $(".chooseXOButton").click(function(){
     game.setPlayers($(this).data("player1"), $(this).data("player2"));
     $(".chooseXOButton").prop("disabled", true);
-    $(".winner").remove();
+    $(".chooseGameButton").prop("disabled", true);
+    $(".resetTheGame").addClass("active");
 
     $(".grid_cell").bind("click", function(){
+      $(".winner").text(" ");
       game.setMove($(this).data("number"));
     });
+  });
+
+  $(".resetButton").click(function(){
+    game.cleanTheBoard();
+    $(".XOChoice").removeClass("active");
+    $(".resetTheGame").removeClass("active");
+    $(".chooseGameButton").prop("disabled", false);
+    $(".chooseXOButton").prop("disabled", false);
+    $(".winner").text(" ");
   });
 
   function boardRendering(board) {
@@ -23,13 +35,11 @@ $(document).ready(function(){
 
   function resultRendering(result) {
     if (result === null) {
-      $("#game-field").append("<p class='winner'>It was a draw</p>");
+      $(".winner").text("It was a draw");
     } else {
-      $("#game-field").append("<p class='winner'>" + result + " wins!!</p>");
+      $(".winner").text(result + " wins!");
     }
     setTimeout(this.cleanTheBoard.bind(this), 2000);
-    $(".chooseXOButton").prop("disabled", false);
-    $(".grid_cell").unbind( "click" );
   }
 
   game.setBoardCallback(boardRendering);

@@ -67,8 +67,6 @@ TicTacToe.prototype.setMove = function(number) {
 
 TicTacToe.prototype.cleanTheBoard = function() {
   this.board = [null, null, null, null, null, null, null, null, null];
-  this.player1 = null;
-  this.player2 = null;
   this.currentPlayer = null;
   this.boardMovesHandler();
 }

@@ -12,7 +12,7 @@
   <h1>Tic Tac Toe game</h1>
 
   <section class="choiceSection">
-    <div class="playersChoice">
+    <div class="playersChoice active">
       <div>Choose 1 player or 2 players game?</div>
       <button class="chooseGameButton" data-multiplayer="false">1 player</button>
       <button class="chooseGameButton" data-multiplayer="true">2 players</button>
@@ -22,6 +22,10 @@
       <div>Would you like to play X or O?</div>
       <button class="chooseXOButton" data-player1="X" data-player2="O">X</button>
       <button class="chooseXOButton" data-player1="O" data-player2="X">O</button>
+    </div>
+
+    <div class="resetTheGame">
+      <button class="resetButton">Reset All</button>
     </div>
   </section>
 
@@ -38,6 +42,8 @@
         <div data-number="8" class="grid_cell"></div>
     </div>
   </section>
+
+  <p class='winner'></p>
 
   <script src="jquery-3.1.1.min.js"></script>
   <script src="tic_tac_toe.js"></script>
