@@ -13,18 +13,19 @@ $(document).ready(function(){
     $(".resetTheGame").addClass("active");
 
     $(".grid_cell").bind("click", function(){
-      $(".winner").text(" ");
+      $(".winner").text("");
       game.setMove($(this).data("number"));
     });
   });
 
   $(".resetButton").click(function(){
-    game.cleanTheBoard();
+    $(".grid_cell").unbind( "click" );
     $(".XOChoice").removeClass("active");
     $(".resetTheGame").removeClass("active");
     $(".chooseGameButton").prop("disabled", false);
     $(".chooseXOButton").prop("disabled", false);
-    $(".winner").text(" ");
+    $(".winner").text("");
+    this.cleanTheBoard.bind(this);
   });
 
   function boardRendering(board) {
