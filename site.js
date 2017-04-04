@@ -25,7 +25,7 @@ $(document).ready(function(){
     $(".chooseGameButton").prop("disabled", false);
     $(".chooseXOButton").prop("disabled", false);
     $(".winner").text("");
-    this.cleanTheBoard.bind(this);
+    game.cleanTheBoard();
   });
 
   function boardRendering(board) {
@@ -40,7 +40,11 @@ $(document).ready(function(){
     } else {
       $(".winner").text(result + " wins!");
     }
-    setTimeout(this.cleanTheBoard.bind(this), 2000);
+    setTimeout(function() {
+      game.cleanTheBoard();
+      $(".winner").text("");
+    }, 2000);
+    $(".grid_cell").unbind( "click" );
   }
 
   game.setBoardCallback(boardRendering);
