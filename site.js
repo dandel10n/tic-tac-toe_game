@@ -11,15 +11,11 @@ $(document).ready(function(){
     $(".chooseXOButton").prop("disabled", true);
     $(".chooseGameButton").prop("disabled", true);
     $(".resetTheGame").addClass("active");
-
-    $(".grid_cell").bind("click", function(){
-      $(".winner").text("");
-      game.setMove($(this).data("number"));
-    });
+    allowClick();
   });
 
   $(".resetButton").click(function(){
-    $(".grid_cell").unbind( "click" );
+    forbidClick();
     $(".XOChoice").removeClass("active");
     $(".resetTheGame").removeClass("active");
     $(".chooseGameButton").prop("disabled", false);
@@ -40,11 +36,22 @@ $(document).ready(function(){
     } else {
       $(".winner").text(result + " wins!");
     }
+    forbidClick();
     setTimeout(function() {
       game.cleanTheBoard();
       $(".winner").text("");
+      allowClick();
     }, 2000);
+  }
+
+  function forbidClick() {
     $(".grid_cell").unbind( "click" );
+  }
+
+  function allowClick() {
+    $(".grid_cell").bind("click", function(){
+      game.setMove($(this).data("number"));
+    });
   }
 
   game.setBoardCallback(boardRendering);
